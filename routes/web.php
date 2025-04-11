@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,8 @@ Route::patch('miseAJour/{id}', 'App\Http\Controllers\ControleurMembres@miseAJour
 Route::get('/identite','App\Http\Controllers\ControleurMembres@identite');
 Route::get('/protege','App\Http\Controllers\ControleurMembres@acces_protege')
     ->middleware('auth');
+Route::get('/admin/pending_users',
+    'App\Http\Controllers\ControleurMembres@pendingUsers');
+Route::post('/admin/approve_user/{id}',
+    'App\Http\Controllers\ControleurMembres@approveUser');
+

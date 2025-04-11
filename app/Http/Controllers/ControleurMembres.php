@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Membre;
@@ -134,4 +135,22 @@ class ControleurMembres extends Controller
         }
         else return view('pages_site/error', ['error' => 'Veuillez vous connecter.']);
     }
+
+    // admin
+    public function pendingUsers()
+    {
+        $users = User::where('approved', false)->get();
+        return view('pages_site/admin/validation_users', ['users' => $users]);
+    }
+
+    public function approveUser($id) // Changez la signature pour utiliser l'ID
+    {
+        $user = User::findOrFail($id);
+
+        $user->approved = true;
+        $user->save();
+
+        return back()->with('success', 'Utilisateur approuvé avec succès');
+    }
+
 }
