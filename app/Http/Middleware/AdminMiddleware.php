@@ -13,11 +13,22 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->isAdmin()) {
-            return $next($request);
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Authentification requise');
         }
-        return redirect('/')->with('error', 'Accès non-autorisé.');
+
+        if (!auth()->user()->isAdmin()) {
+            // Log la tentative d'accès non autorisé
+            \Log::warning('Tentative d\'accès admin non autorisé', [
+                'user_id' => auth()->id(),
+                'ip' => $request->ip()
+            ]);
+
+            abort(403, 'Accès réservé aux administrateurs');
+        }
+
+        return $next($request);
     }
 }
