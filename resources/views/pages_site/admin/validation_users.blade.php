@@ -1,11 +1,3 @@
-User::create([
-'name' => 'admin',
-'email' => 'admin@admin.fr',
-'password' => Hash::make('admin123'),
-'role' => 'admin',
-'approved' => true
-]);
-
 @extends('pages_site.fond')
 
 @section('entete')
