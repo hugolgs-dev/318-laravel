@@ -143,7 +143,7 @@ class ControleurMembres extends Controller
         return view('pages_site/admin/validation_users', ['users' => $users]);
     }
 
-    public function approveUser($id) // Changez la signature pour utiliser l'ID
+    public function approveUser($id)
     {
         $user = User::findOrFail($id);
 
